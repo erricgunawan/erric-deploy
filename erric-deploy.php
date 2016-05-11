@@ -8,3 +8,14 @@
  * Author URI: http://erricgunawan.com
  *
  */
+
+if( ! class_exists( 'Erric_Updater' ) ){
+	include_once( plugin_dir_path( __FILE__ ) . 'updater.php' );
+}
+$updater = new Erric_Updater( __FILE__ );
+$updater->set_username( 'erricgunawan' );
+$updater->set_repository( 'erric-deploy' );
+/*
+	$updater->authorize( 'abcdefghijk1234567890' ); // auth code goes here for private repos
+*/
+$updater->initialize();
