@@ -98,4 +98,42 @@ class Erric_Updater {
 		return $transient; // Return filtered transient
 	}
 
+	public function plugin_popup( $result, $action, $args ) {
+
+		if( ! empty( $args->slug ) ) { // If there is a slug
+			
+			if( $args->slug == explode('/' , $this->basename)[0] ) { // And it's our slug
+
+				$this->get_repository_info(); // Get our repo info
+
+				// Set it to an array
+				$plugin = array(
+					'name'              => $this->plugin["Name"],
+					'slug'              => $this->basename,
+					// 'requires'          => '3.3',
+					// 'tested'            => '4.4.1',
+					// 'rating'            => '100.0',
+					// 'num_ratings'       => '10823',
+					// 'downloaded'        => '14249',
+					// 'added'             => '2016-01-05',
+					'version'           => $this->github_response['tag_name'],
+					'author'            => $this->plugin["AuthorName"],
+					'author_profile'    => $this->plugin["AuthorURI"],
+					'last_updated'      => $this->github_response['published_at'],
+					'homepage'          => $this->plugin["PluginURI"],
+					'short_description' => $this->plugin["Description"],
+					'sections'			=> array(
+						'Description'	=> $this->plugin["Description"],
+						'Updates'		=> $this->github_response['body'],
+					),
+					'download_link'		=> $this->github_response['zipball_url']
+				);
+
+				return (object) $plugin; // Return the data
+			}
+
+		}
+		return $result; // Otherwise return default
+	}
+
 }
