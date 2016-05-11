@@ -136,4 +136,17 @@ class Erric_Updater {
 		return $result; // Otherwise return default
 	}
 
+	public function after_install( $response, $hook_extra, $result ) {
+		global $wp_filesystem; // Get global FS object
+
+		$install_directory = plugin_dir_path( $this->file ); // Our plugin directory
+		$wp_filesystem->move( $result['destination'], $install_directory ); // Move files to the plugin dir
+		$result['destination'] = $install_directory; // Set the destination for the rest of the stack
+
+		if ( $this->active ) { // If it was active
+			activate_plugin( $this->basename ); // Reactivate
+		}
+
+		return $result;
+	}
 }
